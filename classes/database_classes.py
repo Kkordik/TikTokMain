@@ -71,7 +71,7 @@ class Table:
                 raise Exception("In table '{}' is no such column: '{}'".format(self.__name, column))
         return parameters
 
-    async def select_all(self, command: str = "SELECT * FROM {}", logical_expr: str = "AND", **where):
+    async def select_vals(self, command: str = "SELECT * FROM {}", logical_expr: str = "AND", **where):
         """
         Selects all from table can be executed with WHERE using AND or other logical_expression
 
