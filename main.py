@@ -24,8 +24,6 @@ async def main(loop):
     # Register handlers
     register_main_start_cmd(dp)
 
-    await user_tb.insert_vals(user_id=1111)
-
     await dp.start_polling()
 
 
