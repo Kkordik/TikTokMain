@@ -1,5 +1,4 @@
 import aiomysql
-import asyncio
 from aiomysql import Pool
 
 
@@ -147,6 +146,36 @@ class VideosTable(Table):
         self.db = db
         super().__init__(self.__name, self.db, self.__columns)
 
+
+class ProductsTable(Table):
+    """
+    id: tinyint unsigned auto_increment
+    prod_title: tinytext
+    prod_price: smallint unsigned
+    prod_descr: tinytext
+    vid_amount: tinyint unsigned
+    """
+    __name = "videos"
+    __columns = ["id", "prod_title", "prod_price", "prod_descr", "vid_amount"]
+
+    def __init__(self, db: Database):
+        self.db = db
+        super().__init__(self.__name, self.db, self.__columns)
+
+
+class PurchasesTable(Table):
+    """
+    id: tinyint unsigned auto_increment
+    user_id: smallint unsigned
+    product_id: tinyint unsigned
+    purchase_date: date
+    """
+    __name = "videos"
+    __columns = ["id", "user_id", "product_id", "purchase_date"]
+
+    def __init__(self, db: Database):
+        self.db = db
+        super().__init__(self.__name, self.db, self.__columns)
 
 
 
