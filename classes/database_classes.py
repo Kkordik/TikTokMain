@@ -3,14 +3,14 @@ from aiomysql import Pool
 
 
 class Database:
-    def __init__(self, host: str, user: str, password: str,  name: str, port: int = 22):
+    def __init__(self, host: str, user: str, password: str,  name: str, pool: Pool = None, port: int = 22):
         self.__host = host
         self.__user = user
         self.__password = password
         self.__port = port
 
         self.__name = name
-        self.__pool: Pool = None
+        self.__pool: Pool = pool
 
     async def make_pool(self, loop):
         self.__pool = await aiomysql.create_pool(host=self.__host, port=self.__port, user=self.__user,
@@ -176,6 +176,3 @@ class PurchasesTable(Table):
     def __init__(self, db: Database):
         self.db = db
         super().__init__(self.__name, self.db, self.__columns)
-
-
-
