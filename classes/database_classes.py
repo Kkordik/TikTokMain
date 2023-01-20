@@ -3,7 +3,7 @@ from aiomysql import Pool
 
 
 class Database:
-    def __init__(self, host: str, user: str, password: str,  name: str, pool: Pool = None, port: int = 22):
+    def __init__(self, host: str, user: str, password: str,  name: str, pool: Pool = None, port: int = 3306):
         self.__host = host
         self.__user = user
         self.__password = password
