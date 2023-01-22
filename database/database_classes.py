@@ -128,8 +128,7 @@ class UsersTable(Table):
     __columns = ["id", "user_id", "start_date", "baned"]
 
     def __init__(self, db: Database):
-        self.db = db
-        super().__init__(self.__name, self.db, self.__columns)
+        super().__init__(self.__name, db, self.__columns)
 
 
 class VideosTable(Table):
