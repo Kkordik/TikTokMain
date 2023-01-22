@@ -4,6 +4,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from config import *
 from main_interface.start_cmd import register_main_start_cmd
+from main_interface.shop_msg import register_main_shop_msg
 
 
 bot = Bot(token=BOT_TOKEN)
@@ -13,6 +14,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 async def main(_loop):
     # Register handlers
     register_main_start_cmd(dp)
+    register_main_shop_msg(dp)
 
     await dp.start_polling()
 
