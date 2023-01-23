@@ -1,8 +1,12 @@
 from aiogram import Dispatcher, types
+from main_interface.main_classes import Product
+from database.run_main_db import prod_tb
 from texts import text
 
 
 async def shop_msg(message: types.Message):
+    product = Product(prod_tb)
+    all_products = await product.get_all_products()
     await message.answer("rgfsdf")
 
 
