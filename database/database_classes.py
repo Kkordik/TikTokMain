@@ -26,9 +26,11 @@ class Database:
         """
         async with self.__pool.acquire() as con:
             async with con.cursor() as cur:
+                print(command)
                 await cur.execute(command)
                 res = await cur.fetchall()
             await con.commit()
+        print(res)
         return res
 
 
@@ -77,7 +79,7 @@ class Table:
         :param command: MySQL executable command
         :param logical_expr: logical expression 'AND'/'OR'...
         :param where: optional parameters for WHERE expression
-        :return: list of fetched rows if they are
+        :return: dict with values if they are
         """
         where = self.__check_parameters(where)
 
@@ -153,9 +155,10 @@ class ProductsTable(Table):
     prod_price: smallint unsigned
     prod_descr: tinytext
     vid_amount: tinyint unsigned
+    prod_photo: bigint
     """
-    __name = "videos"
-    __columns = ["id", "prod_title", "prod_price", "prod_descr", "vid_amount"]
+    __name = "products"
+    __columns = ["id", "prod_title", "prod_price", "prod_descr", "vid_amount", "prod_photo"]
 
     def __init__(self, db: Database):
         self.db = db
@@ -169,7 +172,7 @@ class PurchasesTable(Table):
     product_id: tinyint unsigned
     purchase_date: date
     """
-    __name = "videos"
+    __name = "purchases"
     __columns = ["id", "user_id", "product_id", "purchase_date"]
 
     def __init__(self, db: Database):
