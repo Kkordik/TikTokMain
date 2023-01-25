@@ -29,8 +29,8 @@ class User(MainClassBase):
 
 
 class Product(MainClassBase):
-    def __init__(self, table: ProductsTable, row_id: int = None, title: str = None, price: int = None, description: str = None,
-                 vid_amount: int = None, prod_photo_id: int = None):
+    def __init__(self, table: ProductsTable, row_id: int = None, title: str = None, price: int = None,
+                 description: str = None, vid_amount: int = None, prod_photo_id: int = None):
         super().__init__(table, row_id)
 
         self.title = title
@@ -42,14 +42,15 @@ class Product(MainClassBase):
     async def get_all_products(self) -> []:
         prods_list = []
         for prod in await self.table.select_vals():
-            prods_list.append(Product(self.table, row_id=prod["id"], title=prod["prod_title"], price=prod["prod_price"],
-                                      description=prod["prod_descr"], vid_amount=prod["vid_amount"],
-                                      prod_photo_id=prod["prod_photo"]))
+            prods_list.append(Product(self.table, row_id=prod["id"], title=prod["prod_title"],
+                                      price=prod["prod_price"], description=prod["prod_descr"],
+                                      vid_amount=prod["vid_amount"], prod_photo_id=prod["prod_photo"]))
         return prods_list
 
 
 class Purchase(MainClassBase):
-    def __init__(self, table: PurchasesTable, row_id: int = None, user: User = None, date: str = "", product: Product = None):
+    def __init__(self, table: PurchasesTable, row_id: int = None, user: User = None, date: str = "",
+                 product: Product = None):
         super().__init__(table, row_id)
 
         self.user: User = user

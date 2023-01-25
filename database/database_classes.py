@@ -26,11 +26,9 @@ class Database:
         """
         async with self.__pool.acquire() as con:
             async with con.cursor() as cur:
-                print(command)
                 await cur.execute(command)
                 res = await cur.fetchall()
             await con.commit()
-        print(res)
         return res
 
 
