@@ -50,6 +50,12 @@ class Product(MainClassBase):
         self.vid_amount = vid_amount
         self.prod_photo_id = prod_photo_id
 
+    def check_full_filling(self) -> bool:
+        if self.title and self.price and self.vid_amount and self.prod_photo_id:
+            return True
+        else:
+            return False
+
     async def get_all_products(self) -> []:
         prods_list = []
         for prod in await self.table.select_vals():
