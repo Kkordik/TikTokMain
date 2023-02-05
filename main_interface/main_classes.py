@@ -1,4 +1,4 @@
-from database.database_classes import Table, UsersTable, PurchasesTable, ProductsTable
+from database.database_classes import Table, UsersTable, PurchasesTable, ProductsTable, VideosTable
 from config import BASIC_LANGUAGE
 
 
@@ -26,6 +26,17 @@ class User(MainClassBase):
         if user_id:
             self.user_id = int(user_id)
         return await self.table.insert_vals(user_id=int(self.user_id))
+
+
+class Video(MainClassBase):
+    def __init__(self, table: VideosTable, row_id: int = None, video_id=None, video_dir: str = None,
+                 video_type: int = None, video_title: str = None):
+        super().__init__(table, row_id)
+
+        self.video_id = int(video_id)
+        self.video_dir = video_dir
+        self.video_type = video_type
+        self.video_title = video_title
 
 
 class Product(MainClassBase):
