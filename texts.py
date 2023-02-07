@@ -4,6 +4,7 @@ text = {
         "start_but1": "Shop",
         "start_but2": "Help",
         "shop_but_l": "<",
-        "shop_but_r": ">"
+        "shop_but_r": ">",
+        "no_prod_found": "No product found("
     }
         }

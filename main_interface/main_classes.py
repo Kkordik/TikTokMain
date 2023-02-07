@@ -4,7 +4,7 @@ from config import BASIC_LANGUAGE
 
 class MainClassBase:
     def __init__(self, table, row_id: int = None):
-        self.table: Table = table
+        self.table: Table.__subclasses__() = table
         self.row_id = row_id
 
 
@@ -14,7 +14,7 @@ class User(MainClassBase):
         super().__init__(table, row_id)
 
         self.user_id: int = int(user_id)
-        self.language = language
+        self._language = language
         self.purchases = purchases
         self.baned = baned
 
@@ -26,6 +26,9 @@ class User(MainClassBase):
         if user_id:
             self.user_id = int(user_id)
         return await self.table.insert_vals(user_id=int(self.user_id))
+
+    def language(self):
+        return self._language
 
 
 class Video(MainClassBase):
@@ -56,12 +59,12 @@ class Product(MainClassBase):
         else:
             return False
 
-    async def get_all_products(self) -> []:
-        prods_list = []
+    async def get_all_products(self) -> dict:
+        prods_list = {}
         for prod in await self.table.select_vals():
-            prods_list.append(Product(self.table, row_id=prod["id"], title=prod["prod_title"],
-                                      price=prod["prod_price"], description=prod["prod_descr"],
-                                      vid_amount=prod["vid_amount"], prod_photo_id=prod["prod_photo"]))
+            prods_list[prod["id"]] = Product(self.table, row_id=prod["id"], title=prod["prod_title"],
+                                             price=prod["prod_price"], description=prod["prod_descr"],
+                                             vid_amount=prod["vid_amount"], prod_photo_id=prod["prod_photo"])
         return prods_list
 
 
