@@ -6,8 +6,9 @@ from database.run_main_db import text_tb
 
 async def start_keyboard(language: str):
     texts = Text(text_tb)
-    but1_text = await texts.get_texts(language=language, text_name="start_but1")
-    but2_text = await texts.get_texts(language=language, text_name="start_but2")
+    but1_text = await texts.get_const_text(language=language, text_name="start_but1")
+    but2_text = await texts.get_const_text(language=language, text_name="start_but2")
+    print(but1_text, "\n", but2_text)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(types.KeyboardButton(but1_text),
                  types.KeyboardButton(but2_text))
@@ -20,9 +21,9 @@ async def shop_keyboard(language: str, product_dict: dict, current_key: int):
     current_id = prod_key_list.index(current_key)
 
     texts = Text(text_tb)
-    but_l_text = await texts.get_texts(language=language, text_name="shop_but_l")
-    but_r_text = await texts.get_texts(language=language, text_name="shop_but_r")
-    but_buy_text = texts.get_texts(language=language, text_name="buy")
+    but_l_text = await texts.get_const_text(language=language, text_name="shop_but_l")
+    but_r_text = await texts.get_const_text(language=language, text_name="shop_but_r")
+    but_buy_text = await texts.get_const_text(language=language, text_name="buy")
 
     if (len(product_dict)-1 > current_id) and (current_id > 0):
         keyboard.add(types.InlineKeyboardButton(text=but_l_text,

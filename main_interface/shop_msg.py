@@ -23,6 +23,7 @@ async def is_button(message: str, button_name) -> bool:
 
 async def shop_msg(message: types.Message):
     user = User(user_tb, message.from_user.id)
+    texts = Text(text_tb)
 
     if await is_button(message=message.text, button_name="start_but1"):
         prod_dict = await Product(prod_tb).get_all_products()
@@ -33,8 +34,7 @@ async def shop_msg(message: types.Message):
             raise Exception(f"No product objects in prod_list: {prod_dict}")
         product_key = next(iter(prod_dict.keys()))
 
-        texts = Text(text_tb)
-        text = await texts.get_const_text(user.language(), "product")
+        text = await texts.get_const_text(language=user.language(), text_name="product")
 
         keyboard = await shop_keyboard(user.language(), product_dict=prod_dict, current_key=product_key)
         product = prod_dict[product_key]
@@ -43,7 +43,8 @@ async def shop_msg(message: types.Message):
 
         await bot.send_photo(user.user_id, photo=product.prod_photo_id, caption=text, reply_markup=keyboard, parse_mode="HTML")
     else:
-        await message.answer()
+        text = await texts.get_const_text(language=user.language(), text_name="msg_not_found")
+        await message.answer(text=text)
 
 
 async def shop_move_callback(call: types.CallbackQuery):
@@ -61,7 +62,7 @@ async def shop_move_callback(call: types.CallbackQuery):
 
     keyboard = await shop_keyboard(user.language(), product_dict=prod_dict, current_key=call_prod_key)
     product = prod_dict[call_prod_key]
-    text = await Text(text_tb).get_const_text(user.language(), "product")
+    text = str(await Text(text_tb).get_const_text(user.language(), "product"))
     photo = types.InputMediaPhoto(media=product.prod_photo_id,
                                   caption=text.format(product.title, product.price, product.description,
                                                       product.vid_amount),
@@ -83,6 +84,6 @@ async def shop_buy_callback(call: types.CallbackQuery):
 
 
 def register_main_shop_msg(dp: Dispatcher):
-    dp.register_message_handler(shop_msg, lambda message: True)
+    dp.register_message_handler(shop_msg, lambda message: is_button(message=message.text, button_name="start_but1"))
     dp.register_callback_query_handler(shop_move_callback, lambda call: call.data.split(".")[0] == "shop_move")
     dp.register_callback_query_handler(shop_buy_callback, lambda call: call.data.split(".")[0] == "shop_buy")

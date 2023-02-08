@@ -85,9 +85,9 @@ class Text(MainClassBase):
                  language: str = None):
         super().__init__(table, row_id)
 
-        self.text_name = text_name
-        self.text = text
-        self.language = language
+        self.text_name: str = text_name
+        self.text: str = text
+        self.language: str = language
 
     async def get_texts(self, language: str = None, text_name: str = None) -> []:
         """

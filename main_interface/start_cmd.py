@@ -10,8 +10,7 @@ async def start_cmd(message: types.Message):
     await user.insert_user()
     keyboard = await start_keyboard(user.language())
     texts = Text(text_tb)
-    start_text = await texts.get_texts(language=user.language(), text_name="start_txt")
-    print(start_text)
+    start_text = await texts.get_const_text(language=user.language(), text_name="start_txt")
     await message.answer(start_text, reply_markup=keyboard, parse_mode="HTML")
 
 
