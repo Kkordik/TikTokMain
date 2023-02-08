@@ -1,5 +1,5 @@
 import asyncio
-from database.database_classes import Database, UsersTable, VideosTable, ProductsTable, PurchasesTable
+from database.database_classes import Database, UsersTable, VideosTable, ProductsTable, PurchasesTable, TextsTable
 from config import HOST, USER, PASSWORD, NAME, PORT
 
 
@@ -19,3 +19,4 @@ if __name__ == "database.run_main_db":
     video_tb = VideosTable(main_db)
     prod_tb = ProductsTable(main_db)
     purch_tb = PurchasesTable(main_db)
+    text_tb = TextsTable(main_db)

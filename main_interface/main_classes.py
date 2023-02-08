@@ -1,10 +1,12 @@
-from database.database_classes import Table, UsersTable, PurchasesTable, ProductsTable, VideosTable
+from typing import Union
+
+from database.database_classes import Table, UsersTable, PurchasesTable, ProductsTable, VideosTable, TextsTable
 from config import BASIC_LANGUAGE
 
 
 class MainClassBase:
     def __init__(self, table, row_id: int = None):
-        self.table: Table.__subclasses__() = table
+        self.table: Table = table
         self.row_id = row_id
 
 
@@ -76,3 +78,48 @@ class Purchase(MainClassBase):
         self.user: User = user
         self.date = date
         self.product: Product = product
+
+
+class Text(MainClassBase):
+    def __init__(self, table: TextsTable, row_id: int = None, text_name: str = None, text: str = None,
+                 language: str = None):
+        super().__init__(table, row_id)
+
+        self.text_name = text_name
+        self.text = text
+        self.language = language
+
+    async def get_texts(self, language: str = None, text_name: str = None) -> []:
+        """
+        Get all texts defined by text_name and language(can be None)
+        :param language:
+        :param text_name:
+        :return: list Text objects
+        """
+        if text_name:
+            self.text_name = text_name
+
+        if language:
+            self.language = language
+
+        texts = []
+        if self.language:
+            for text in await self.table.select_vals(language=self.language, text_name=self.text_name):
+                texts.append(Text(self.table, text_name=text["text_name"], text=text["text"],
+                                  language=text["language"]))
+        else:
+            for text in await self.table.select_vals(text_name=self.text_name):
+                texts.append(Text(self.table, text_name=text["text_name"], text=text["text"],
+                                  language=text["language"]))
+        return texts
+
+    async def get_const_text(self, language, text_name: str = None) -> str:
+        """
+        Get constant text from database.
+        :param language:
+        :param text_name:
+        :return: str (text of first returned object from db)
+        """
+        res = await self.get_texts(language, text_name)
+        self.text = res[0].text
+        return self.text

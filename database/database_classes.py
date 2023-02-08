@@ -176,3 +176,18 @@ class PurchasesTable(Table):
     def __init__(self, db: Database):
         self.db = db
         super().__init__(self.__name, self.db, self.__columns)
+
+
+class TextsTable(Table):
+    """
+    id: int unsigned auto_increment
+    text_name: tinytext
+    text: text
+    language: tinytext
+    """
+    __name = "texts"
+    __columns = ["id", "text_name", "text", "language"]
+
+    def __init__(self, db: Database):
+        self.db = db
+        super().__init__(self.__name, self.db, self.__columns)
