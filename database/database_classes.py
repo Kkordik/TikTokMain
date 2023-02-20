@@ -31,6 +31,37 @@ class Database:
             await con.commit()
         return res
 
+    async def _create_user_cl(self, new_usr_name: str, password: str):
+        """create user for a client"""
+        return await self.execute_db(f"CREATE USER '{new_usr_name}'@'%' IDENTIFIED BY '{password}';")
+
+    async def _create_database_cl(self, new_db_name):
+        """create db for a client"""
+        await self.execute_db(f"CREATE SCHEMA '{new_db_name}';")
+
+    async def _grant_privileges_cl(self, usr_name: str, new_db_name: str):
+        """grant user clients privileges"""
+        await self.execute_db(f"GRANT select ON tt_main_db.videos TO '{usr_name}'@'%';")
+        return await self.execute_db(f"GRANT alter, create, delete, drop, execute, insert, select, update ON {new_db_name}.* TO"
+                                     f" '{usr_name}'@'%';")
+
+    async def _create_users_tb_cl(self):
+        await self.execute_db(f"CREATE TABLE `{self.__name}`.`users` ("
+                              "`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT, `user_id` BIGINT NULL,"
+                              " `active` TINYINT NULL DEFAULT 1, `date` DATE NULL,"
+                              " PRIMARY KEY (`id`), UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE);")
+
+    async def launch_client_db(self, new_usr_name: str, new_password: str, new_db_name: str) -> Database:
+        await self._create_user_cl(new_usr_name, new_password)
+        await self._create_database_cl(new_db_name)
+        await self._grant_privileges_cl(new_usr_name, new_db_name)
+        client_db = Database(self.__host, new_usr_name, new_password, new_db_name)
+        await client_db._create_users_tb_cl()
+        # Here is left to create texts and urls tables, after it, I have to add purchase row to the main_db
+        # call this method, copy client_bot, edit config and somehow run it all as task or process.
+        #
+        return client_db
+
 
 class Table:
     def __init__(self, name: str, db: Database, columns: list):
