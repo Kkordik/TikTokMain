@@ -1,5 +1,4 @@
 from aiogram import types
-from texts import text
 from main_interface.main_classes import Text
 from database.run_main_db import text_tb
 
@@ -45,4 +44,16 @@ async def shop_keyboard(language: str, product_dict: dict, current_key: int):
     else:
         keyboard.add(types.InlineKeyboardButton(text=but_buy_text, callback_data="shop_buy.{}".format(prod_key_list[current_id])))
 
+    return keyboard
+
+
+def admin_keyboard():
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(types.InlineKeyboardButton(text="add product", callback_data="admin_add_prod"))
+    return keyboard
+
+
+def adm_cancel_keyboard():
+    keyboard = types.InlineKeyboardMarkup(row_width=1)
+    keyboard.add(types.InlineKeyboardButton(text="cancel", callback_data="admin_cancel"))
     return keyboard

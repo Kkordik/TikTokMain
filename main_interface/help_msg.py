@@ -1,5 +1,4 @@
 from aiogram import Dispatcher, types
-from texts import text
 
 
 async def shop_msg(message: types.Message):

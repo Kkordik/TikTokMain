@@ -1,7 +1,6 @@
 from aiogram import Dispatcher, types
 from main_interface.main_classes import User, Text
 from database.run_main_db import user_tb, text_tb
-from texts import text
 from keyboards import start_keyboard
 
 

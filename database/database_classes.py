@@ -108,6 +108,7 @@ class Table:
 
         unpack_values = ', '.join(columns_vals.values())
         unpack_columns = ', '.join(columns_vals.keys())
+        print(command.format(self.__name, unpack_columns, unpack_values))
         return await self.execute_tb(command.format(self.__name, unpack_columns, unpack_values))
 
     async def launch_table(self,  *args, **kwargs):
