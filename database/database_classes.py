@@ -38,7 +38,7 @@ class Table:
         self.db = db
         self.__columns = columns
 
-    async def execute_tb(self, command):
+    async def execute_tb(self, command: str):
         """
         Execute any given command and return dict with values
 
@@ -90,6 +90,29 @@ class Table:
             where_str += logical_expr.join(where_equations)
         else:
             where_str = ""
+
+        return await self.execute_tb("{} {}".format(command.format(self.__name), where_str))
+
+    async def delete_line(self, command: str = "DELETE FROM {}", logical_expr: str = "AND", **where):
+        """
+        Deletes all from table must be executed with WHERE, you may use AND or other logical_expression
+
+        :param command: MySQL executable command
+        :param logical_expr: logical expression 'AND'/'OR'...
+        :param where: optional parameters for WHERE expression
+        :return: dict with values if they are
+        """
+        where = self.__check_parameters(where)
+
+        # Create string WHERE expression
+        if len(where) != 0:
+            where_str = "WHERE"
+            where_equations = []
+            for column in where.keys():
+                where_equations.append(" {}={} ".format(column, where[column]))
+            where_str += logical_expr.join(where_equations)
+        else:
+            raise Exception("No where arguments given. It is impossible to delete all from table")
 
         return await self.execute_tb("{} {}".format(command.format(self.__name), where_str))
 

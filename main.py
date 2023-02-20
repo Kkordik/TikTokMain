@@ -7,6 +7,7 @@ from main_interface.help_msg import register_main_help_msg
 from main_interface.temporar import register_get_photo_id
 from admin_interface.add_product import register_add_prod_call
 from admin_interface.admin_cancel import register_admin_cancel
+from admin_interface.delete_product import register_admin_del_product
 
 
 async def main(_loop):
@@ -18,6 +19,7 @@ async def main(_loop):
     register_get_photo_id(dp)
     register_add_prod_call(dp)
     register_admin_cancel(dp)
+    register_admin_del_product(dp)
 
     await dp.start_polling()
 
